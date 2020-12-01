@@ -1,0 +1,66 @@
+"! <p class="shorttext synchronized" lang="en">Input for AOC</p>
+CLASS zcl_ddevx_input DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+    CLASS-METHODS create
+      IMPORTING
+        i_url           TYPE string
+      RETURNING
+        VALUE(r_result) TYPE REF TO zcl_ddevx_input
+      RAISING
+        cx_web_http_client_error
+        cx_http_dest_provider_error.
+    "! <p class="shorttext synchronized" lang="en">Returns input data as table of integers, one per line</p>
+    "!
+    "! @parameter r_result | <p class="shorttext synchronized" lang="en">Input data as integers</p>
+    METHODS get_lines_as_integers RETURNING VALUE(r_result) TYPE z_ddevx_aoc_int4_table.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    CLASS-METHODS get_text_from_url
+      IMPORTING
+        i_url         TYPE string
+      RETURNING
+        VALUE(r_text) TYPE string
+      RAISING
+        cx_web_http_client_error
+        cx_http_dest_provider_error.
+    DATA input_data TYPE string.
+ENDCLASS.
+
+
+
+CLASS zcl_ddevx_input IMPLEMENTATION.
+
+  METHOD create.
+
+    r_result = NEW #( ).
+
+    r_result->input_data = get_text_from_url( i_url ).
+
+  ENDMETHOD.
+
+  METHOD get_text_from_url.
+    DATA(http_client) = cl_web_http_client_manager=>create_by_http_destination( cl_http_destination_provider=>create_by_url( i_url ) ).
+    DATA(request) = http_client->get_http_request( ).
+    DATA(response) = http_client->execute( i_method = if_web_http_client=>get ).
+
+    r_text = response->get_text( ).
+  ENDMETHOD.
+
+
+  METHOD get_lines_as_integers.
+    DATA i TYPE i.
+
+    SPLIT input_data AT cl_abap_char_utilities=>newline INTO TABLE DATA(string_table).
+
+    CLEAR r_result.
+    LOOP AT string_table INTO DATA(string).
+      i = string.
+      APPEND i TO r_result.
+    ENDLOOP.
+  ENDMETHOD.
+
+ENDCLASS.
