@@ -1,0 +1,43 @@
+CLASS zcl_ddevx_aoc_0201 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES if_oo_adt_classrun .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    TYPES: BEGIN OF type_password,
+             rule_min  TYPE i,
+             rule_max  TYPE i,
+             rule_char TYPE string,
+             password  TYPE string,
+           END OF TYpe_PASSWORD.
+           
+    "types table_type_pass TYPE STANDARD TABLE OF type_password.
+    METHODS get_number_of_correct_passwds
+      IMPORTING
+        i_string_table                     TYPE z_ddevx_aoc_string_table
+      RETURNING
+        VALUE(r_number_of_correct_passwds) TYPE i.
+ENDCLASS.
+
+
+
+CLASS zcl_ddevx_aoc_0201 IMPLEMENTATION.
+
+
+  METHOD if_oo_adt_classrun~main.
+    DATA i TYPE i.
+    DATA(string_table) = zcl_ddevx_input=>create('https://raw.githubusercontent.com/ddevx/aoc2020/main/input_02_01_example')->get_lines_as_strings( ).
+
+    i = get_number_of_correct_passwds( string_table ).
+
+  ENDMETHOD.
+
+  METHOD get_number_of_correct_passwds.
+
+  ENDMETHOD.
+
+ENDCLASS.
