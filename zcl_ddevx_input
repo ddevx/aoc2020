@@ -17,6 +17,11 @@ CLASS zcl_ddevx_input DEFINITION
     "!
     "! @parameter r_result | <p class="shorttext synchronized" lang="en">Input data as integers</p>
     METHODS get_lines_as_integers RETURNING VALUE(r_result) TYPE z_ddevx_aoc_int4_table.
+
+    "! <p class="shorttext synchronized" lang="en">Returns input data as table of strings, one per line</p>
+    "!
+    "! @parameter r_result | <p class="shorttext synchronized" lang="en">Input data as strings</p>
+    METHODS get_lines_as_strings RETURNING VALUE(r_result) TYPE z_ddevx_aoc_string_table.
   PROTECTED SECTION.
   PRIVATE SECTION.
     CLASS-METHODS get_text_from_url
@@ -61,6 +66,10 @@ CLASS zcl_ddevx_input IMPLEMENTATION.
       i = string.
       APPEND i TO r_result.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD get_lines_as_strings.
+     SPLIT input_data AT cl_abap_char_utilities=>newline INTO TABLE r_result.
   ENDMETHOD.
 
 ENDCLASS.
