@@ -1,0 +1,38 @@
+CLASS zcl_ddevx_aoc_0301 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+    INTERFACES if_oo_adt_classrun.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    DATA: tree_map     TYPE zddevx_aoc_strings_w_line_no,
+          last_line    TYPE i,
+          current_col  TYPE i VALUE 1,
+          current_line TYPE i VALUE 1,
+          no_of_trees  TYPE i VALUE 0,
+          steps_right  TYPE i VALUE 3,
+          steps_down   TYPE i VALUE 1.
+ENDCLASS.
+
+
+
+CLASS zcl_ddevx_aoc_0301 IMPLEMENTATION.
+  METHOD if_oo_adt_classrun~main.
+    DATA i TYPE i.
+    tree_map = zcl_ddevx_input=>create('https://raw.githubusercontent.com/ddevx/aoc2020/main/input_03_01_example')->get_lines_as_strings_w_line_no( ).
+    last_line = lines( tree_map ).
+
+
+    WHILE current_line < last_line.
+      ##todo
+*  move_right( steps_right ).
+*  move_down( steps_down ).
+*  count_tree( get_char_at_current_pos(  ) ).
+    ENDWHILE.
+
+    out->write( no_of_trees ).
+  ENDMETHOD.
+
+ENDCLASS.
