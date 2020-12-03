@@ -18,10 +18,15 @@ CLASS zcl_ddevx_input DEFINITION
     "! @parameter r_result | <p class="shorttext synchronized" lang="en">Input data as integers</p>
     METHODS get_lines_as_integers RETURNING VALUE(r_result) TYPE z_ddevx_aoc_int4_table.
 
-    "! <p class="shorttext synchronized" lang="en">Returns input data as table of strings, one per line</p>
+   "! <p class="shorttext synchronized" lang="en">Returns input data as table of strings, one per line</p>
     "!
     "! @parameter r_result | <p class="shorttext synchronized" lang="en">Input data as strings</p>
     METHODS get_lines_as_strings RETURNING VALUE(r_result) TYPE z_ddevx_aoc_string_table.
+
+    "! <p class="shorttext synchronized" lang="en">Returns input data as table of strings with line numbers, one per line</p>
+    "!
+    "! @parameter r_result | <p class="shorttext synchronized" lang="en">Input data as strings with line numbers</p>
+    METHODS get_lines_as_strings_w_line_no RETURNING VALUE(r_result) TYPE ZDDEVX_AOC_STRINGS_W_LINE_NO.
   PROTECTED SECTION.
   PRIVATE SECTION.
     CLASS-METHODS get_text_from_url
@@ -71,5 +76,22 @@ CLASS zcl_ddevx_input IMPLEMENTATION.
   METHOD get_lines_as_strings.
      SPLIT input_data AT cl_abap_char_utilities=>newline INTO TABLE r_result.
   ENDMETHOD.
+
+    METHOD get_lines_as_strings_w_line_no.
+    DATA: result_line like line of r_result,
+          i type i value 0.
+
+    SPLIT input_data AT cl_abap_char_utilities=>newline INTO TABLE DATA(string_table).
+
+    CLEAR r_result.
+    LOOP AT string_table INTO DATA(string).
+      i += 1.
+      result_line-string = string.
+      result_line-line = i.
+      APPEND result_line TO r_result.
+    ENDLOOP.
+  ENDMETHOD.
+
+
 
 ENDCLASS.
